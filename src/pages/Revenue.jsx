@@ -15,11 +15,11 @@ import {
   Bar,
   Line,
 } from "recharts";
-import { Redirect } from 'react-router-dom'
-import {useSelector} from "react-redux" 
+import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Revenue() {
-  const globalState = useSelector((state)=>state.user)
+  const globalState = useSelector((state) => state.user);
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -70,14 +70,13 @@ function Revenue() {
       let profit = val.pendapatan - val.totalModal;
       return (
         <tr>
-          <td>{val.id}</td>
           <td>{val.date}</td>
-          <td>Rp. {val.pendapatan}</td>
-          <td>Rp. {val.totalModal}</td>
+          <td>Rp. {val.pendapatan.toLocaleString()}</td>
+          <td>Rp. {val.totalModal.toLocaleString()}</td>
           {profit < 0 ? (
-            <td className="table-danger">Rp. {profit}</td>
+            <td className="table-danger">Rp. {profit.toLocaleString()}</td>
           ) : (
-            <td className="table-success">Rp. {profit}</td>
+            <td className="table-success">Rp. {profit.toLocaleString()}</td>
           )}
         </tr>
       );
@@ -101,11 +100,10 @@ function Revenue() {
 
     return (
       <tr>
-        <td></td>
         <td>TOTAL</td>
-        <td>Rp. {totalPendapatan}</td>
-        <td>Rp. {totalModal}</td>
-        <td>Rp. {totalProfit}</td>
+        <td>Rp. {totalPendapatan.toLocaleString()}</td>
+        <td>Rp. {totalModal.toLocaleString()}</td>
+        <td>Rp. {totalProfit.toLocaleString()}</td>
       </tr>
     );
   };
@@ -114,7 +112,9 @@ function Revenue() {
     fetchTrxRevenue();
   }, []);
 
-  if (globalState.role !== "admin"){ return <Redirect to="/" /> }
+  if (globalState.role !== "admin") {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div>
@@ -149,7 +149,6 @@ function Revenue() {
         <div className="table-tampil">
           <table className="table table-hover">
             <thead className="thead-light">
-              <th>ID</th>
               <th>Date</th>
               <th>Pendapatan</th>
               <th>Modal</th>

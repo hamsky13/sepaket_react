@@ -5,6 +5,7 @@ import { API_URL } from "../constants/API";
 import { connect, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import { Modal, Button } from "react-bootstrap";
 
 function ManageTransaction() {
   const userGlobal = useSelector((state) => state.user);
@@ -14,7 +15,14 @@ function ManageTransaction() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [selectData, setSelectData] = useState("");
+  const [show, setShow] = useState(false);
+  const [imageModal, setImageModal] = useState("");
 
+  const handleClose = () => setShow(false);
+  const handleShow = (img) => {
+    setShow(true);
+    setImageModal(img);
+  };
   const fetchTransaction = () => {
     Axios.get(`${API_URL}/transaction/get`)
       .then((result) => {
@@ -96,13 +104,14 @@ function ManageTransaction() {
   const renderTransaksi = () => {
     return dataTransaksi.map((val) => {
       return (
-        <tr>
+        <tr data-toggle="modal">
           <td>{val.id_trx}</td>
           <td>{val.date}</td>
           <td>{val.username}</td>
           <td>Rp. {val.total_trx}</td>
           <td>
             <img
+              onClick={() => handleShow(val.transfer_receipt)}
               className="admin-product-image"
               src={API_URL + val.transfer_receipt}
               alt={val.transfer_receipt}
@@ -228,6 +237,7 @@ function ManageTransaction() {
             Show
           </button>
         </div>
+
         <div className="text-center data">
           <table className="table table-hover">
             <thead className="thead-light">
@@ -242,6 +252,16 @@ function ManageTransaction() {
             </thead>
             <tbody>{renderTransaksi()}</tbody>
           </table>
+          <>
+            <Modal size="lg" show={show} onHide={handleClose}>
+              <Modal.Header closeButton>
+                <Modal.Title>Transfer Receipt</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <img src={API_URL + imageModal} alt={imageModal} />
+              </Modal.Body>
+            </Modal>
+          </>
         </div>
       </div>
     );
