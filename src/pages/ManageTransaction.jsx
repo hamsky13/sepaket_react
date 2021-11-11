@@ -5,7 +5,7 @@ import { API_URL } from "../constants/API";
 import { connect, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import DatePicker from "react-datepicker";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 function ManageTransaction() {
   const userGlobal = useSelector((state) => state.user);
